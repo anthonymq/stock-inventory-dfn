@@ -1,0 +1,42 @@
+{
+  "canisters": {
+    "dfinity_vue": {
+      "main": "src/dfinity_vue/main.mo",
+      "type": "motoko"
+    },
+    "dfinity_vue_assets": {
+      "dependencies": [
+        "dfinity_vue"
+      ],
+      "frontend": {
+        "entrypoint": "src/dfinity_vue_assets/public/index.js",
+        "output": "canisters/frontend/assets"
+      },
+      "source": [
+        "src/dfinity_vue_assets/assets",
+        "canisters/frontend/assets"
+      ],
+      "type": "assets"
+    }
+  },
+  "defaults": {
+    "build": {
+      "output": "canisters/",
+      "packtool": ""
+    }
+  },
+  "dfx": "0.6.22",
+  "networks": {
+    "ic": {
+      "providers": [
+        "https://gw.dfinity.network"
+      ],
+      "type": "persistent"
+    },
+    "local": {
+      "bind": "127.0.0.1:8000",
+      "type": "ephemeral"
+    }
+  },
+  "version": 1
+}
