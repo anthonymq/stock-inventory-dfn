@@ -4,6 +4,10 @@
       "main": "src/dfinity_vue/main.mo",
       "type": "motoko"
     },
+    "stock": {
+      "main": "src/dfinity_vue/stock.mo",
+      "type": "motoko"
+    },
     "dfinity_vue_assets": {
       "dependencies": [
         "dfinity_vue"

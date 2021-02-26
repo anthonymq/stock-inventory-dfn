@@ -18,24 +18,59 @@
         </v-row>
       </v-container>
     </v-form>
+    <v-form ref="form" @submit.prevent="createItem">
+      <v-container>
+        <v-row>
+          <v-col cols="12" md="4">
+            <v-text-field
+              v-model="name"
+              label="name"
+              required
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="4">
+            <v-text-field
+              v-model="description"
+              label="description"
+              required
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="4">
+            <v-btn type="submit" color="primary">
+              Send
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-form>
     <div>
       {{
         internetComputerGreeting || "Internet Computer waiting for your firstname..."
       }}
     </div>
+    <v-data-table :items="items" :headers="headers" item-key="id"></v-data-table>
   </v-app>
 </template>
 
 <script>
 import dfinity_vue from "ic:canisters/dfinity_vue";
+import stock from "ic:canisters/stock";
 
 export default {
   data: () => {
     return {
       firstname: "",
       internetComputerGreeting: "",
+      name: "",
+      description: "",
+      items: [],
+      headers: [
+        {text: 'Nom', value: 'name'},
+        {text: 'Description', value: 'description'}
+      ]
     };
   },
+   
   created() {},
   methods: {
     onSubmit() {
@@ -43,6 +78,16 @@ export default {
         this.internetComputerGreeting = greeting;
       });
     },
+    
+    createItem() {
+      stock.createOne({name:this.name, description:this.description})
+      .then(() => stock.getAllItems())
+      .then((items) => {
+        console.log(items)
+        this.items = items
+      })
+    }
+    
   },
 };
 </script>
