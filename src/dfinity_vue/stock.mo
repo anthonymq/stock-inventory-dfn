@@ -4,6 +4,7 @@ import Hash "mo:base/Hash";
 import Array "mo:base/Array";
 
 import List "mo:base/List";
+
 actor Inventory {
     object counter {
         var count = 0;
@@ -14,7 +15,6 @@ actor Inventory {
             read()
         };
     };
-
     
 
     public type UserId = Principal;
@@ -49,7 +49,6 @@ actor Inventory {
     public func getOne(id: Nat): async ?ItemDto {
         hashMap.get(id)
     };
-
 
 
 

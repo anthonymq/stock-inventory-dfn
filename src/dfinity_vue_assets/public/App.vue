@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
     <v-form ref="form" @submit.prevent="onSubmit">
       <v-container>
         <v-row>
@@ -22,11 +23,7 @@
       <v-container>
         <v-row>
           <v-col cols="12" md="4">
-            <v-text-field
-              v-model="name"
-              label="name"
-              required
-            ></v-text-field>
+            <v-text-field v-model="name" label="name" required></v-text-field>
           </v-col>
           <v-col cols="12" md="4">
             <v-text-field
@@ -45,10 +42,16 @@
     </v-form>
     <div>
       {{
-        internetComputerGreeting || "Internet Computer waiting for your firstname..."
+        internetComputerGreeting ||
+          "Internet Computer waiting for your firstname..."
       }}
     </div>
-    <v-data-table :items="items" :headers="headers" item-key="id"></v-data-table>
+    <v-data-table
+      :items="items"
+      :headers="headers"
+      item-key="name"
+      :items-per-page="5"
+    ></v-data-table>
   </v-app>
 </template>
 
@@ -65,29 +68,31 @@ export default {
       description: "",
       items: [],
       headers: [
-        {text: 'Nom', value: 'name'},
-        {text: 'Description', value: 'description'}
-      ]
+        { text: "Nom", value: "name" },
+        { text: "Description", value: "description" },
+      ],
     };
   },
-   
-  created() {},
+
+  created() {
+    stock.getAllItems().then((items) => (this.items = items));
+  },
   methods: {
     onSubmit() {
       dfinity_vue.greet(this.firstname).then((greeting) => {
         this.internetComputerGreeting = greeting;
       });
     },
-    
+
     createItem() {
-      stock.createOne({name:this.name, description:this.description})
-      .then(() => stock.getAllItems())
-      .then((items) => {
-        console.log(items)
-        this.items = items
-      })
-    }
-    
+      stock
+        .createOne({ name: this.name, description: this.description })
+        .then(() => stock.getAllItems())
+        .then((items) => {
+          console.log(items);
+          this.items = items;
+        });
+    },
   },
 };
 </script>

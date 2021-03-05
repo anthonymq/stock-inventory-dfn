@@ -27,6 +27,7 @@ shared({ caller = initializer }) actor class() {
         #lowest;
     };
 
+    private var test: Sta;
     private stable var roles: AssocList.AssocList<Principal, Role> = List.nil();
     private stable var role_requests: AssocList.AssocList<Principal, Role> = List.nil();
 
