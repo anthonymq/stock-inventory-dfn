@@ -28,6 +28,7 @@ actor Inventory {
         id: Nat;
         name: Text;
         description: Text;
+        borrowed: Bool;
     };
 
     func isEq(x: Int, y: Int): Bool { x == y };
@@ -35,7 +36,7 @@ actor Inventory {
 
     public func createOne(item: CreateItemDto): async () {
         let id = counter.bump();
-        hashMap.put(id, {id = id;name= item.name; description= item.description});
+        hashMap.put(id, {id = id;name= item.name; description= item.description; borrowed=false});
     };
 
     public func getAllItems(): async [ItemDto] {
@@ -49,24 +50,4 @@ actor Inventory {
     public func getOne(id: Nat): async ?ItemDto {
         hashMap.get(id)
     };
-
-
-
-    private stable var availableItems: List.List<ItemDto> = List.nil();
-    private stable var borrowedItems: AssocList.AssocList<ItemDto, Principal> = List.nil();
-
-    public func createItem (item: CreateItemDto): async Int {
-        var newItem: ItemDto = {id=counter.bump() ;name= item.name; description= item.description};
-        availableItems := List.push(newItem, availableItems);
-        return newItem.id;
-    };
-
-    // public query func getAllItems (): async List.List<(ItemDto)> {
-    //     return availableItems;
-    // };
-
-    // public func clearAvailableItems(): async () {
-    //     availableItems := List.nil();
-    // }
-
 };

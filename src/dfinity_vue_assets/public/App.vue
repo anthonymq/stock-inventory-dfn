@@ -1,6 +1,9 @@
 <template>
   <v-app>
-    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css"
+      rel="stylesheet"
+    />
     <v-form ref="form" @submit.prevent="onSubmit">
       <v-container>
         <v-row>
@@ -51,7 +54,29 @@
       :headers="headers"
       item-key="name"
       :items-per-page="5"
-    ></v-data-table>
+    >
+      <template v-slot:item.borrowed="item">
+        <v-simple-checkbox
+          v-model="item.borrowed"
+          disabled
+        ></v-simple-checkbox>
+      </template>
+      <template v-slot:item.actions="{ item }">
+      <v-icon
+        small
+        class="mr-2"
+        @click="editItem(item)"
+      >
+        mdi-pencil
+      </v-icon>
+      <v-icon
+        small
+        @click="deleteItem(item)"
+      >
+        mdi-delete
+      </v-icon>
+    </template>
+    </v-data-table>
   </v-app>
 </template>
 
@@ -70,6 +95,8 @@ export default {
       headers: [
         { text: "Nom", value: "name" },
         { text: "Description", value: "description" },
+        { text: "Borrowed", value: "borrowed" },
+        { text: 'Actions', value: 'actions', sortable: false },
       ],
     };
   },
