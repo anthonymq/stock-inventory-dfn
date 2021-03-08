@@ -42,19 +42,19 @@ actor Inventory {
         hashMap.put(id, ({id= id; name= item.name; description= item.description}, null));
     };
 
-    public func getAllItems(): async [ItemDto] {
+    public query func getAllItems(): async [ItemDto] {
         var items: [ItemDto] = [];
         for((id, item) in hashMap.entries()) {
-            items := Array.append<ItemDto>(items, [await mapItem(item)]);
+            items := Array.append<ItemDto>(items, [mapItem(item)]);
         };
         return items;
     };
     
-    public func getOne(id: Nat): async ?(Item, ?UserId) {
+    func getOne(id: Nat): ?(Item, ?UserId) {
         hashMap.get(id)
     };
 
-    public func mapItem((item: Item, principal: ?UserId)): async ItemDto {
+    func mapItem((item: Item, principal: ?UserId)): ItemDto {
         {
             id= item.id;
             name= item.name;
@@ -64,7 +64,7 @@ actor Inventory {
     };
 
     public func borrow(id: Nat, caller: ?UserId): async Text {
-        switch(await getOne(id)) {
+        switch(getOne(id)) {
             case null {
                 "Item " # Nat.toText(id) # " not found."
             };
