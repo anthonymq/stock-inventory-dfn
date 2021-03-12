@@ -1,30 +1,4 @@
 <template>
-  <v-app>
-    <link
-      href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css"
-      rel="stylesheet"
-    />
-    <v-form ref="form" @submit.prevent="createItem">
-      <v-container>
-        <v-row>
-          <v-col cols="12" md="4">
-            <v-text-field v-model="name" label="name" required></v-text-field>
-          </v-col>
-          <v-col cols="12" md="4">
-            <v-text-field
-              v-model="description"
-              label="description"
-              required
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" md="4">
-            <v-btn type="submit" color="primary" :disabled="busy">
-              Ajouter
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-form>
     <v-data-table
       ref="stock-table"
       :items="items"
@@ -56,20 +30,15 @@
         </v-icon>
       </template>
     </v-data-table>
-    <loan-log />
   </v-app>
 </template>
 
 <script>
 import stock from "ic:canisters/stock";
-import LoanLog from './LoanLog.vue';
 
 export default {
-  components: { LoanLog },
   data: () => {
     return {
-      name: "",
-      description: "",
       items: [],
       headers: [
         { text: "Nom", value: "name" },
@@ -86,30 +55,15 @@ export default {
     this.getAllItems();
   },
   methods: {
-    createItem() {
-      this.busy = true;
-      stock
-        .createOne({ name: this.name, description: this.description })
-        .then(this.getAllItems);
-    },
-
-    borrowItem(id) {
-      this.busy = true;
-      stock.borrowItem(id).then(this.getAllItems);
-    },
-    unborrowItem(id) {
-      this.busy = true;
-      stock.unborrowItem(id).then(this.getAllItems);
-    },
-    isAvailable(item) {
-      return !item.borrower || item.borrower == "";
-    },
     getAllItems() {
       stock.getAllItems().then((items) => {
         console.log(items);
         this.items = items;
         this.busy = false;
       });
+    },
+    isAvailable(item) {
+      return !item.borrower || item.borrower == "";
     },
   },
 };
