@@ -91,7 +91,6 @@ actor Inventory {
             name= item.name;
             description= item.description;
             borrower= Option.get(borrowerId, null)
-            //borrower = null;
         };
     };
 
@@ -144,6 +143,18 @@ actor Inventory {
         }
     };
 
+    func registerItemLoan(itemId: ItemId, loanId: LoanId) {
+        var itemLoans:?List.List<LoanId> = loansByItem.get(itemId);
+        
+        if (Option.isNull(itemLoans)) {
+            itemLoans := ?(List.nil<LoanId>());
+        };
+
+        let newItemLoans = List.push(loanId, Option.unwrap(itemLoans));
+        
+        loansByItem.put(itemId, newItemLoans);
+    };
+
     func borrow(itemId: ItemId, caller: ?UserId): async Text {
         switch(getOne(itemId)) {
             case null {
@@ -156,8 +167,9 @@ actor Inventory {
                 let loan:Loan = itemLoan.1;
 
                 loans.put(loan.loanId, loan);
-                //loansByItem.put(itemId, loan.loanId);
                 inventory.put(item.id, item);
+                registerItemLoan(item.id, loan.loanId);
+                
                 "Item " # Nat.toText(itemId) # " borrowed."
             }
         };
