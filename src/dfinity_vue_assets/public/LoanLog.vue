@@ -4,33 +4,20 @@
       :items="items"
       :headers="headers"
       item-key="name"
-      :items-per-page="5"
+      :items-per-page="20"
       :loading="busy"
-      loading-text="Chargement du stock en cours..."
+      loading-text="Chargement de l'historique en cours..."
+      sort-by="loanId"
+      sort-desc="true"
     >
-      <template v-slot:item.actions="{ item }">
-        <v-icon
-          v-if="isAvailable(item)"
-          small
-          class="mr-2"
-          @click="borrowItem(item.id)"
-          color="green"
-          :disabled="busy"
-        >
-          mdi-arrow-down-circle-outline
-        </v-icon>
-        <v-icon
-          v-else
-          small
-          @click="unborrowItem(item.id)"
-          color="red"
-          :disabled="busy"
-        >
-          mdi-arrow-up-circle-outline
-        </v-icon>
-      </template>
+     <template v-slot:item.begin="{ item }">
+      <span>{{ formatDate(item.begin) }}</span>
+    </template>
+     <template v-slot:item.end="{ item }">
+      <span>{{ formatDate(item.end) }}</span>
+    </template>
+    
     </v-data-table>
-  </v-app>
 </template>
 
 <script>
@@ -41,10 +28,11 @@ export default {
     return {
       items: [],
       headers: [
-        { text: "Nom", value: "name" },
-        { text: "Description", value: "description" },
-        { text: "Emprunteur", value: "borrower" },
-        { text: "Actions", value: "actions", sortable: false },
+        { text: "Id", value: "loanId" },
+        { text: "Item Id", value: "itemId" },
+        { text: "Emprunteur", value: "borrowerId" },
+        { text: "Début", value: "begin" },
+        { text: "Fin", value: "end" },
       ],
       busy: false,
     };
@@ -55,8 +43,11 @@ export default {
     this.getAllItems();
   },
   methods: {
+    formatDate(date) {
+      return (!date || date == "") ? "N/A" : new Date(date/1000000).toLocaleString();
+    },
     getAllItems() {
-      stock.getAllItems().then((items) => {
+      stock.getAllLoans().then((items) => {
         console.log(items);
         this.items = items;
         this.busy = false;

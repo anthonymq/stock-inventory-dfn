@@ -33,6 +33,7 @@
       :items-per-page="5"
       :loading="busy"
       loading-text="Chargement du stock en cours..."
+      sort-by="id"
     >
       <template v-slot:item.actions="{ item }">
         <v-icon
@@ -71,7 +72,9 @@ export default {
       name: "",
       description: "",
       items: [],
+      loans: [],
       headers: [
+        { text: "Id", value: "id" },
         { text: "Nom", value: "name" },
         { text: "Description", value: "description" },
         { text: "Emprunteur", value: "borrower" },
