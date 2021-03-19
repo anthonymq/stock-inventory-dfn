@@ -4,6 +4,7 @@
       href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css"
       rel="stylesheet"
     />
+    {{principal}}
     <v-form ref="form" @submit.prevent="createItem">
       <v-container>
         <v-row>
@@ -63,12 +64,14 @@
 
 <script>
 import stock from "ic:canisters/stock";
-import LoanLog from './LoanLog.vue';
+import auth from "ic:canisters/dfinity_vue";
+import LoanLog from "./LoanLog.vue";
 
 export default {
   components: { LoanLog },
   data: () => {
     return {
+      principal: "",
       name: "",
       description: "",
       items: [],
@@ -87,6 +90,9 @@ export default {
   created() {
     this.busy = true;
     this.getAllItems();
+    auth.callerPrincipal().then((principal) => {
+      this.principal = principal
+      });
   },
   methods: {
     createItem() {

@@ -43,10 +43,11 @@ export default {
       busy: false,
     };
   },
-
-  
   created() {
 
+  },
+  mounted() {
+    this.recursiveGetAllItems();
   },
   methods: {
     formatDate(date) {
@@ -78,9 +79,6 @@ export default {
       
       setTimeout(recursiveGetAllItems(), 5000);
     }
-  },
-  mounted() {
-    this.recursiveGetAllItems();
   },
 };
 </script>

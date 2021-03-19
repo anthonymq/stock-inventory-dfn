@@ -83,7 +83,7 @@ shared({ caller = initializer }) actor class() {
     };
 
     // Return the principal of the message caller/user identity
-    public shared({ caller }) func callerPrincipal() : async Principal {
+    public query({ caller }) func callerPrincipal() : async Principal {
         return caller;
     };
 
