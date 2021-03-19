@@ -53,15 +53,6 @@ export default {
     formatDate(date) {
       return (!date || date == "") ? "N/A" : new Date(date/1000000).toLocaleString();
     },
-    getAllItems() {
-      this.busy = true;
-      stock.getAllLoans().then((items) => {
-        console.log(items);
-        this.items = items;
-        this.busy = false;
-      });
-      //setTimeout(this.getAllItems(), 10000);
-    },
     isAvailable(item) {
       return !item.borrower || item.borrower == "";
     },
@@ -76,8 +67,7 @@ export default {
         this.items = items;
         this.busy = false;
       });
-      
-      setTimeout(recursiveGetAllItems(), 5000);
+      setTimeout(() => this.recursiveGetAllItems(), 5000);
     }
   },
 };

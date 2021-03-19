@@ -2,10 +2,10 @@ import AssocList "mo:base/AssocList";
 import Error "mo:base/Error";
 import List "mo:base/List";
 
-shared({ caller = initializer }) actor class() {
+shared({ caller = initializer }) actor class(ownerPrincipal: Principal) {
 
     // Establish role-based greetings to display
-    public shared({ caller }) func greet(name : Text) : async Text {
+    public query({ caller }) func greet(name : Text) : async Text {
         if (has_permission(caller, #assign_role)) {
             return "Hello, " # name # ". You have a role with administrative privileges."
         } else if (has_permission(caller, #lowest)) {
@@ -36,7 +36,7 @@ shared({ caller = initializer }) actor class() {
     };
 
     func get_role(pal: Principal) : ?Role {
-        if (pal == initializer) {
+        if (pal == ownerPrincipal) {
             ?#owner;
         } else {
             AssocList.find<Principal, Role>(roles, pal, principal_eq);
@@ -53,16 +53,16 @@ shared({ caller = initializer }) actor class() {
         }
     };
 
-    // Reject unauthorized user identities
-    func require_permission(pal: Principal, perm: Permission) : async () {
-        if ( has_permission(pal, perm) == false ) {
-            throw Error.reject( "unauthorized" );
-        }
-    };
+    // // Reject unauthorized user identities
+    // func require_permission(pal: Principal, perm: Permission) {
+    //     if ( has_permission(pal, perm) == false ) {
+    //         throw Error.reject( "unauthorized" );
+    //     }
+    // };
 
     // Assign a new role to a principal
     public shared({ caller }) func assign_role( assignee: Principal, new_role: ?Role ) : async () {
-        await require_permission( caller, #assign_role );
+        assert has_permission(caller, #assign_role);
 
         switch new_role {
             case (?#owner) {
@@ -70,7 +70,7 @@ shared({ caller = initializer }) actor class() {
             };
             case (_) {};
         };
-        if (assignee == initializer) {
+        if (assignee == ownerPrincipal) {
             throw Error.reject( "Cannot assign a role to the canister owner" );
         };
         roles := AssocList.replace<Principal, Role>(roles, assignee, principal_eq, new_role).0;
@@ -88,21 +88,21 @@ shared({ caller = initializer }) actor class() {
     };
 
     // Return the role of the message caller/user identity
-    public shared({ caller }) func my_role() : async ?Role {
+    public query({ caller }) func my_role() : async ?Role {
         return get_role(caller);
     };
 
-    public shared({ caller }) func my_role_request() : async ?Role {
+    public query({ caller }) func my_role_request() : async ?Role {
         AssocList.find<Principal, Role>(role_requests, caller, principal_eq);
     };
 
-    public shared({ caller }) func get_role_requests() : async List.List<(Principal,Role)> {
-        await require_permission( caller, #assign_role );
+    public query({ caller }) func get_role_requests() : async List.List<(Principal,Role)> {
+        assert has_permission(caller, #assign_role);
         return role_requests;
     };
 
-    public shared({ caller }) func get_roles() : async List.List<(Principal,Role)> {
-        await require_permission( caller, #assign_role );
+    public query({ caller }) func get_roles() : async List.List<(Principal,Role)> {
+        assert has_permission(caller, #assign_role);
         return roles;
     };
 };

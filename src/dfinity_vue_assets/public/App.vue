@@ -4,7 +4,7 @@
       href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css"
       rel="stylesheet"
     />
-    {{principal}}
+    {{principal}} {{role}}
     <v-form ref="form" @submit.prevent="createItem">
       <v-container>
         <v-row>
@@ -72,6 +72,7 @@ export default {
   data: () => {
     return {
       principal: "",
+      role: "",
       name: "",
       description: "",
       items: [],
@@ -92,7 +93,10 @@ export default {
     this.getAllItems();
     auth.callerPrincipal().then((principal) => {
       this.principal = principal
-      });
+    });
+    auth.my_role().then((role) => {
+      this.role = Object.keys(role[0])[0]
+    });
   },
   methods: {
     createItem() {
