@@ -8,8 +8,7 @@ const createAgent = (host) => {
     localStorage.setItem('keypair', JSON.stringify(keyPair));
   } else {
     keyPair = JSON.parse(keyPair);
-    // keyPair.publicKey = new Uint8Array(keyPair.publicKey);
-    // keyPair.secretKey = new Uint8Array(keyPair.secretKey);
+    keyPair = ic.makeKeyPair(new Uint8Array(keyPair.publicKey.data), new Uint8Array(keyPair.secretKey.data));
   }
   console.log(keyPair);
   const agent = new HttpAgent({
