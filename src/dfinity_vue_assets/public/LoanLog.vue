@@ -44,9 +44,7 @@ export default {
     };
   },
 
-  mounted() {
-    this.recursiveGetAllItems();
-  },
+  
   created() {
 
   },
@@ -80,6 +78,9 @@ export default {
       
       setTimeout(recursiveGetAllItems(), 5000);
     }
+  },
+  mounted() {
+    this.recursiveGetAllItems();
   },
 };
 </script>
