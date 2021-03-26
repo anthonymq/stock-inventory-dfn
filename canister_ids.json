@@ -5,6 +5,12 @@
   "dfinity_vue_assets": {
     "ic": "abvwx-iiaaa-aaaab-qalpq-cai"
   },
+  "frontend": {
+    "ic": "thpl5-siaaa-aaaab-qaqrq-cai"
+  },
+  "main": {
+    "ic": "tsi2q-taaaa-aaaab-qaqsa-cai"
+  },
   "stock": {
     "ic": "f5oms-daaaa-aaaab-qalqa-cai"
   }
