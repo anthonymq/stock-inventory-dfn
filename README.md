@@ -14,10 +14,10 @@ dfx canister install --all -m reinstall
 ```
 
 ```
-dfx deploy dfinity_vue --argument "(principal \"$(dfx identity get-principal)\")"
-dfx canister call dfinity_vue my_role
+dfx deploy main --argument "(principal \"$(dfx identity get-principal)\")"
+dfx canister call main my_role
 (you should be owner)
 
 \\ to give access to a new user, you need is Principal
-dfx canister call dfinity_vue assign_role "(principal \"PRINCIPAL\", opt variant{authorized})"
+dfx canister call main assign_role "(principal \"PRINCIPAL\", opt variant{authorized})"
 ```

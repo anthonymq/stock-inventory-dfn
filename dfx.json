@@ -1,23 +1,24 @@
 {
   "canisters": {
-    "dfinity_vue": {
-      "main": "src/dfinity_vue/main.mo",
+    "main": {
+      "main": "src/backend/main.mo",
       "type": "motoko"
     },
     "stock": {
-      "main": "src/dfinity_vue/stock.mo",
+      "main": "src/backend/stock.mo",
       "type": "motoko"
     },
-    "dfinity_vue_assets": {
+    "frontend": {
       "dependencies": [
-        "dfinity_vue"
+        "main",
+        "stock"
       ],
       "frontend": {
-        "entrypoint": "src/dfinity_vue_assets/public/index.js",
+        "entrypoint": "src/frontend/public/index.js",
         "output": "canisters/frontend/assets"
       },
       "source": [
-        "src/dfinity_vue_assets/assets",
+        "src/frontend/assets",
         "canisters/frontend/assets"
       ],
       "type": "assets"

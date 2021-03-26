@@ -64,7 +64,7 @@
 
 <script>
 import stock from "ic:canisters/stock";
-import auth from "ic:canisters/dfinity_vue";
+import auth from "ic:canisters/main";
 import LoanLog from "./LoanLog.vue";
 
 export default {
