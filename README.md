@@ -15,6 +15,7 @@ dfx canister install --all -m reinstall
 
 ```
 dfx deploy main --argument "(principal \"$(dfx identity get-principal)\")"
+                --argument "(principal \"$(dfx identity get-principal)\")"
 dfx canister call main my_role
 (you should be owner)
 
